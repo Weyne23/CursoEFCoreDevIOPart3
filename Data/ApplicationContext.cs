@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Curso.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace Curso.Data
 {
@@ -17,7 +19,10 @@ namespace Curso.Data
             const string strConection = "Data source=(localdb)\\mssqllocaldb;Initial Catalog=DevIO-02;Integrated Security=true;pooling=true"; //MultipleActiveResultSets=true
             //optionsBuilder.UseSqlServer(strConection, p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
             optionsBuilder.UseSqlServer(strConection)
-            .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+            //.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+            .LogTo(Console.WriteLine, new[] { CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted }, 
+            LogLevel.Information,
+            DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);
         }
     }
 }
