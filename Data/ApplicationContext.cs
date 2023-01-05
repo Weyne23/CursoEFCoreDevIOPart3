@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Curso.Domain;
@@ -11,6 +12,7 @@ namespace Curso.Data
 {
     public class ApplicationContext : DbContext
     {
+        private readonly StreamWriter _writer = new StreamWriter("Meu_Log_Do_EF_Cote.txt", append: true);
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Funcionario> Funcionarios { get; set; }
 
@@ -20,9 +22,16 @@ namespace Curso.Data
             //optionsBuilder.UseSqlServer(strConection, p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
             optionsBuilder.UseSqlServer(strConection)
             //.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
-            .LogTo(Console.WriteLine, new[] { CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted }, 
+            /*.LogTo(Console.WriteLine, new[] { CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted }, 
             LogLevel.Information,
-            DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);
+            DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);*/
+            .LogTo(_writer.WriteLine, LogLevel.Information);
+        }
+        public override void Dispose()
+        {
+            base.Dispose();
+            _writer.Dispose();
         }
     }
+
 }
