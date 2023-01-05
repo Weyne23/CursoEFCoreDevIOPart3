@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace DominandoEFCore
 {
@@ -6,7 +7,14 @@ namespace DominandoEFCore
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            ConsultarDepartamentos();
+        }
+
+        static void ConsultarDepartamentos()
+        {
+            using var db = new Curso.Data.ApplicationContext();
+
+            var departamentos = db.Departamentos.Where(p => p.Id > 0).ToArray();
         }
     }
 }
