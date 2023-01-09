@@ -21,12 +21,13 @@ namespace Curso.Data
             const string strConection = "Data source=(localdb)\\mssqllocaldb;Initial Catalog=DevIO-02;Integrated Security=true;pooling=true"; //MultipleActiveResultSets=true
             //optionsBuilder.UseSqlServer(strConection, p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
             optionsBuilder.UseSqlServer(strConection)
-            //.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+            .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
             /*.LogTo(Console.WriteLine, new[] { CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted }, 
             LogLevel.Information,
             DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);*/
             //.LogTo(_writer.WriteLine, LogLevel.Information);
-            .EnableDetailedErrors();
+            //.EnableDetailedErrors(); //Habilitar erros detalhados
+            .EnableSensitiveDataLogging();
         }
         public override void Dispose()
         {
