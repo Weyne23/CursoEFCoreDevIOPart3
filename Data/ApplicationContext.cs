@@ -20,7 +20,7 @@ namespace Curso.Data
         {
             const string strConection = "Data source=(localdb)\\mssqllocaldb;Initial Catalog=DevIO-02;Integrated Security=true;pooling=true"; //MultipleActiveResultSets=true
             //optionsBuilder.UseSqlServer(strConection, p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-            optionsBuilder.UseSqlServer(strConection, p => p.MaxBatchSize(100))//MaxBatchSize pode aumentar ou diminuir o numero de inserções ao mesmo tempo
+            optionsBuilder.UseSqlServer(strConection, p => p.MaxBatchSize(100).CommandTimeout(5))//MaxBatchSize pode aumentar ou diminuir o numero de inserções ao mesmo tempo
             .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
             /*.LogTo(Console.WriteLine, new[] { CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted }, 
             LogLevel.Information,
