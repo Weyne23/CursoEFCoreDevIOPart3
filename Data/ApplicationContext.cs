@@ -20,7 +20,12 @@ namespace Curso.Data
         {
             const string strConection = "Data source=(localdb)\\mssqllocaldb;Initial Catalog=DevIO-02;Integrated Security=true;pooling=true"; //MultipleActiveResultSets=true
             //optionsBuilder.UseSqlServer(strConection, p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-            optionsBuilder.UseSqlServer(strConection, p => p.MaxBatchSize(100).CommandTimeout(5))//MaxBatchSize pode aumentar ou diminuir o numero de inserções ao mesmo tempo
+            optionsBuilder.UseSqlServer(
+                strConection, 
+                p => p
+                    .MaxBatchSize(100)
+                    .CommandTimeout(5)//MaxBatchSize pode aumentar ou diminuir o numero de inserções ao mesmo tempo
+                    .EnableRetryOnFailure(4, TimeSpan.FromSeconds(10), null))//Seria as tentativas de refazer a query apos o erro, 1 parametro: Numero de tentativas, 2 parametro: Tempo da retentativa, 3 parametro: Array de Erros, passar null par usr padroes
             .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
             /*.LogTo(Console.WriteLine, new[] { CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted }, 
             LogLevel.Information,
