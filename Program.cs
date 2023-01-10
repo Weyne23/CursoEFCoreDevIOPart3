@@ -14,6 +14,24 @@ namespace DominandoEFCore
             TempoComandoGeral();
         }
 
+        
+        static void ExecutarEstrategiaaResiliencia()
+        {
+            using var db = new Curso.Data.ApplicationContext();
+            
+            var strategy = db.Database.CreateExecutionStrategy();
+            
+            strategy.Execute(() => 
+            {
+                using var transaction = db.Database.BeginTransaction();
+
+                db.Departamentos.Add(new Curso.Domain.Departamento(){ Descricao = "Departamento Transacao"});
+                db.SaveChanges();
+
+                transaction.Commit();
+            });
+        }
+
         static void TempoComandoGeral()
         {
             using var db = new Curso.Data.ApplicationContext();
